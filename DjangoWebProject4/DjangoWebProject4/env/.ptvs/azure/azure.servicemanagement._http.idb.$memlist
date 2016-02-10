@@ -1,0 +1,6 @@
+HTTPRequest
+requestsclient
+HTTPResponse
+HTTPError
+httpclient
+winhttp

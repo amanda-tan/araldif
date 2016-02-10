@@ -1,0 +1,15 @@
+test_timeseries
+test_util
+test_tslib
+test_timezones
+test_base
+test_holiday
+test_plotting
+test_period
+test_offsets
+test_resample
+test_converter
+test_daterange
+test_timeseries_legacy
+test_timedeltas
+test_frequencies

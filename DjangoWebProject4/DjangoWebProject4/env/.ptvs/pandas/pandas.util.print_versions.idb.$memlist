@@ -1,0 +1,9 @@
+show_versions
+os
+struct
+platform
+subprocess
+codecs
+get_sys_info
+main
+sys

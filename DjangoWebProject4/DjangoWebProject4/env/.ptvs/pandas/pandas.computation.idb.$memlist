@@ -1,0 +1,11 @@
+pytables
+api
+eval
+engines
+common
+expr
+align
+tests
+ops
+expressions
+scope

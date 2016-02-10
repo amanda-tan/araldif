@@ -1,0 +1,14 @@
+LayerMapping
+HAS_GDAL
+sample
+add_postgis_srs
+precision_wkt
+srs
+layermapping
+LayerMapError
+add_srs_entry
+ogrinspect
+ogrinfo
+mapping
+wkt
+ImproperlyConfigured

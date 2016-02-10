@@ -1,0 +1,23 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+  <h3><b>API call:</b> http://araldig.azurewebsites.net/api/gethydrograph?start=startdate&end=enddate&station=stationname
+    <br />
+    <b>Format</b>
+    Startdate: YYYY-MM-DD
+    Enddate: YYYY-MMM-DD
+    Stations:
+    ARYSS
+    HODJI 
+    NARYN
+    UCHKU
+    TYUME
+    UTSKE
+    </h3>
+
+{% endblock %}
+   

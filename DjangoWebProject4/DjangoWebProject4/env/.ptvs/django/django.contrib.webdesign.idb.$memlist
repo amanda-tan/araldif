@@ -1,0 +1,5 @@
+apps
+warnings
+templatetags
+default_app_config
+RemovedInDjango110Warning

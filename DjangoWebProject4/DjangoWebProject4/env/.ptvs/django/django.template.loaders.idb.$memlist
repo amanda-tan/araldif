@@ -1,0 +1,6 @@
+eggs
+locmem
+filesystem
+base
+cached
+app_directories

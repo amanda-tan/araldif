@@ -1,0 +1,15 @@
+test_subtype
+test_sequnpack
+test_pack
+test_seq
+test_unpack_raw
+test_obj
+test_case
+test_newspec
+test_except
+test_limits
+test_format
+test_extension
+test_buffer
+test_read_size
+test_unpack

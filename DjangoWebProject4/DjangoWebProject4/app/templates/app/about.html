@@ -1,0 +1,36 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<h3>{{ message }}</h3>
+
+<p><h3><b>API call:</b></h3>
+    <br />
+    http://araldig.azurewebsites.net/api/gethydrograph?start=startdate&end=enddate&station=stationname
+    <br />
+    <h3><b>Format</b></h3>
+    <br />
+    Choose dates from 1948-01-01 to 2010-12-31
+    <br />
+    <br />
+    Startdate: YYYY-MM-DD
+    <br />
+    Enddate: YYYY-MMM-DD
+    <br />
+    Stations:
+    <br />
+    ARYSS
+    <br />
+    HODJI
+    <br /> 
+    NARYN
+    <br />
+    UCHKU
+    <br />
+    TYUME
+    <br />
+    UTSKE
+    </p>
+
+{% endblock %}
