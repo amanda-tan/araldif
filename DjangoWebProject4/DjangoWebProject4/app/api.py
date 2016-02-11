@@ -57,7 +57,7 @@ def music(request):
 
 def getblob(request):
     assert isinstance(request, HttpRequest)
-    blob_service = BlobService(account_name='araldrift', account_key='otLzzkwQHQD3xFTQxwxy64PCL6eDINWGjSB7x6Ta2XVw3+3ffI5O2MhAEavf/r8qIW4G/dKrZAVg1R64nK7hDQ==')
+    blob_service = BlobService(account_name='araldrift', account_key='KEY REMOVED')
     # http://<storage-account-name>.blob.core.windows.net/<container-name>/<blob-name>
     name = 'test.txt'
     fpath = '{0}\{1}'.format(tempfile.gettempdir(),name)
@@ -85,7 +85,7 @@ def gethydrograph(request):
 
     #start blob service
     stationfile = station + '.day.new'
-    blob_service = BlobService(account_name='araldrift', account_key='otLzzkwQHQD3xFTQxwxy64PCL6eDINWGjSB7x6Ta2XVw3+3ffI5O2MhAEavf/r8qIW4G/dKrZAVg1R64nK7hDQ==')
+    blob_service = BlobService(account_name='araldrift', account_key='KEY REMOVED')
     blob_service.get_blob_to_path('flow', stationfile, './tmp.csv')  
     f = file('./tmp.csv')
     
