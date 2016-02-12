@@ -1,9 +1,3 @@
-'''
-The djurassic service api.
-
-Cheers, Nels
-'''
-
 #### Django modules
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse, Http404, HttpResponseServerError, HttpResponseNotFound
@@ -19,12 +13,14 @@ import json
 import mimetypes, os
 import tempfile
 import pandas as pd
+import matplotlib
 #import numpy as np
-#import numpy.ma as ma
+import numpy.ma as ma
 #from scipy.interpolate import interp1d
-#from matplotlib import mlab
+from matplotlib import mlab
 #from azure.storage import BlobService, TableService
 #import pyproj
+import matplotlib.pyplot as plt
 
 #### Internal modules
 #import tools.builder as b
@@ -69,12 +65,11 @@ def getblob(request):
 
 def gethydrograph(request):
     '''
-    JSON return of a particular hydorgaph by start / stop / station / time interval
-
+    Returns streamflow data by start / stop / station 
     In response it will 
         generate a 404 error if the value is not found
         or
-        return a JSON response with the requested slice.
+        return a JSON response with the requested slice or a .csv file by default
     '''
     assert isinstance(request, HttpRequest)
     
@@ -82,30 +77,51 @@ def gethydrograph(request):
     end = request.GET.get('end', None)
     station = request.GET.get('station',None)
     interval  = request.GET.get('interval',None)
+    jsondat = request.GET.get('jsondat',None)
+    plot = request.GET.get('plot',None)
 
     #start blob service
     stationfile = station + '.day.new'
+    downloadablefile = station + '_' + start + '_' + end + '.csv'
     blob_service = BlobService(account_name='araldrift', account_key='KEY REMOVED')
     blob_service.get_blob_to_path('flow', stationfile, './tmp.csv')  
     f = file('./tmp.csv')
     
     #read in pandas data and subsetting
-    d_cols = ["date","flow"]
+    d_cols = ["DATE","FLOW"]
     d = pd.read_csv('./tmp.csv', sep=" ", names=d_cols)
-    df = d[(d.date >= start) & (d.date <= end)] 
+    df = d[(d.DATE >= start) & (d.DATE <= end)] 
     h = df.to_json(orient='records')
+    json_encoded_result = json.dumps(h)
+    df.plot(x='DATE', y='FLOW', figsize=(14,6))
+    plt.savefig('./plot_test.png')
+   
+   
     #h = []
     #while True:
      #   line = f.readline()
       #  if line == "": break
        # h.append(line)
     #f.close()
-    json_encoded_result = json.dumps(h)
-
     try:
-        return HttpResponse(json_encoded_result, content_type="application/json" )
+        if jsondat in ['TRUE']:
+           response = HttpResponse(json_encoded_result, content_type="application/json" )
+           return response
+
+        elif plot in ['TRUE']:
+            image_data = open("./plot_test.png", "rb").read()
+            response = HttpResponse(image_data, content_type='image/png')
+            return response
+
+        else:
+            response = HttpResponse(content_type='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=' +downloadablefile
+            df.to_csv(response, index=False, lineterminator='\r\n')
+            return response
     except Exception as a:
         return HttpResponseNotFound(content="No dice, either the inputs were out of range, the file couldn't be retrieved, or the winds weren't in your favor.")
+
+    
 
 
     

@@ -7,7 +7,7 @@
 
 <p><h3><b>API call:</b></h3>
     <br />
-    http://araldig.azurewebsites.net/api/gethydrograph?start=startdate&end=enddate&station=stationname
+    http://araldig.azurewebsites.net/api/gethydrograph?start=startdate&end=enddate&station=stationname&[jsondat=TRUE]&[plot=TRUE]
     <br />
     <h3><b>Format</b></h3>
     <br />
@@ -18,7 +18,7 @@
     <br />
     Enddate: YYYY-MMM-DD
     <br />
-    Stations:
+    Stations (must be all caps):
     <br />
     ARYSS
     <br />
@@ -31,6 +31,15 @@
     TYUME
     <br />
     UTSKE
+    <p><h3><b>Example Calls</b></h3></p>
+<br />Get streamflow for Uchku gauge for January 01, 1995 to December 31, 2005 as a downloadable .csv file:
+<br /><a href="http://araldig.azurewebsites.net/api/gethydrograph?start=1995-01-01&end=2005-12-31&station=UCHKU">http://araldig.azurewebsites.net/api/gethydrograph?start=1995-01-01&end=2005-12-31&station=UCHKU</a>
+<br />
+<br />Get streamflow for Tyume gauge for November 15, 1965 to March 23, 1997 as a JSON serialized dump to screen (note that using Internet Explorer will bring this up in Visual Studio):
+<br /><a href="http://araldig.azurewebsites.net/api/gethydrograph?start=1965-11-15&end=1997-03-23&station=TYUME&jsondat=TRUE">http://araldig.azurewebsites.net/api/gethydrograph?start=1965-11-15&end=1997-03-23&station=TYUME&jsondat=TRUE</a>
+<br />
+<br />To generate a plot, just add plot=TRUE to the end of the API
+<br /><a href="http://araldig.azurewebsites.net/api/gethydrograph?start=1995-01-01&end=2005-12-31&station=UCHKU&plot=TRUE">http://araldig.azurewebsites.net/api/gethydrograph?start=1995-01-01&end=2005-12-31&station=UCHKU&plot=TRUE</a>
     </p>
 
 {% endblock %}
