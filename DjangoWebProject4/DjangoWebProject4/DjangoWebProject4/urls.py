@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     # API
     url(r'^api/music','app.api.music'),
     url(r'^api/gethydrograph','app.api.gethydrograph'),
+    url(r'^api/getanalysis','app.api.getanalysis'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

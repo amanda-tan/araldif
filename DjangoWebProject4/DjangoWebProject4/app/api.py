@@ -8,31 +8,20 @@ from django.conf import settings
 #### External modules
 from io import BytesIO
 import datetime
-#import dateutil.parser
 import json
 import mimetypes, os
 import tempfile
 import pandas as pd
 import matplotlib
-#import numpy as np
+import numpy as np
 import numpy.ma as ma
 #from scipy.interpolate import interp1d
 from matplotlib import mlab
-#from azure.storage import BlobService, TableService
-#import pyproj
-import matplotlib.pyplot as plt
-
-#### Internal modules
-#import tools.builder as b
-#from settings import *
-#import cannedresponses as cr
-#from tools.drawing import *
-#from tools import zfun
-#from tools.blobcache import BlobCache
-#from tools.fieldtable import FieldManager
-#from app.settings import *
-
 from azure.storage.blob import BlobService
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import paramiko
+
 import sys,re, string, json, os, subprocess, tempfile
 
 def music(request):
@@ -53,7 +42,7 @@ def music(request):
 
 def getblob(request):
     assert isinstance(request, HttpRequest)
-    blob_service = BlobService(account_name='araldrift', account_key='KEY REMOVED')
+    blob_service = BlobService(account_name='araldrift', account_key='otLzzkwQHQD3xFTQxwxy64PCL6eDINWGjSB7x6Ta2XVw3+3ffI5O2MhAEavf/r8qIW4G/dKrZAVg1R64nK7hDQ==')
     # http://<storage-account-name>.blob.core.windows.net/<container-name>/<blob-name>
     name = 'test.txt'
     fpath = '{0}\{1}'.format(tempfile.gettempdir(),name)
@@ -62,6 +51,26 @@ def getblob(request):
     response['Content-Disposition'] = 'attachment; filename=test.txt'
     blob.Properties.ContentDisposition = "attachment; filename=" + downloadName;
     return response
+
+def getanalysis(request):
+    assert isinstance(request, HttpRequest)
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+        ssh.connect('araldif.westus.cloudapp.azure.com', username='araldif', password='araldif1*')
+    except paramiko.SSHException:
+           return HttpResponse("Connection Failed")
+           quit()
+
+    stdin,stdout,stderr = ssh.exec_command("ls /etc/")
+
+    h = []
+    for line in stdout.readlines():
+        h.append(line)
+    stdout.close()
+    ssh.close()
+    
+    return HttpResponse(h)
 
 def gethydrograph(request):
     '''
@@ -83,7 +92,7 @@ def gethydrograph(request):
     #start blob service
     stationfile = station + '.day.new'
     downloadablefile = station + '_' + start + '_' + end + '.csv'
-    blob_service = BlobService(account_name='araldrift', account_key='KEY REMOVED')
+    blob_service = BlobService(account_name='araldrift', account_key='otLzzkwQHQD3xFTQxwxy64PCL6eDINWGjSB7x6Ta2XVw3+3ffI5O2MhAEavf/r8qIW4G/dKrZAVg1R64nK7hDQ==')
     blob_service.get_blob_to_path('flow', stationfile, './tmp.csv')  
     f = file('./tmp.csv')
     
@@ -120,6 +129,8 @@ def gethydrograph(request):
             return response
     except Exception as a:
         return HttpResponseNotFound(content="No dice, either the inputs were out of range, the file couldn't be retrieved, or the winds weren't in your favor.")
+
+
 
     
 
