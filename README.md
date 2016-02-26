@@ -1,2 +1,2 @@
-# araldig
+# araldif
 API for AralDIF
