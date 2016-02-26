@@ -4,9 +4,9 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>DjangoWebProject4</Name>
     <RootNamespace>DjangoWebProject4</RootNamespace>
-    <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
+    <InterpreterId>{2c7efdc3-5bae-48cd-90f4-3b81bc1c4f46}</InterpreterId>
     <InterpreterVersion>2.7</InterpreterVersion>
-    <NameOfLastUsedPublishProfile>AralDIG - Web Deploy</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>araldif - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -59,6 +59,7 @@
     <None Include="araldif - Web Deploy.pubxml" />
     <None Include="AralDIG - Web Deploy.pubxml" />
     <Content Include="app\templates\app\api.html" />
+    <None Include="AralDIF-Web Deploy.pubxml" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />
@@ -96,7 +97,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+    <Interpreter Include="env1\">
+      <Id>{2c7efdc3-5bae-48cd-90f4-3b81bc1c4f46}</Id>
+      <BaseInterpreter>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</BaseInterpreter>
+      <Version>2.7</Version>
+      <Description>env1 (Python 2.7)</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <LibraryPath>Lib\</LibraryPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X86</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <!-- Specify pre- and post-build commands in the BeforeBuild and 
