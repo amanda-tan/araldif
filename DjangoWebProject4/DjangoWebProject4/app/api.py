@@ -54,23 +54,48 @@ def getblob(request):
 
 def getanalysis(request):
     assert isinstance(request, HttpRequest)
+    latstart  = request.GET.get('latstart', None)
+    latend  = request.GET.get('latend', None)
+    lonstart  = request.GET.get('lonstart', None)
+    lonend  = request.GET.get('lonend', None)
+    sea  = request.GET.get('season', None)
+
+    #start SSH 
     ssh = paramiko.SSHClient()
+    blob_service = BlobService(account_name='araldrift', account_key='otLzzkwQHQD3xFTQxwxy64PCL6eDINWGjSB7x6Ta2XVw3+3ffI5O2MhAEavf/r8qIW4G/dKrZAVg1R64nK7hDQ==')
+    blob_service.get_blob_to_path('security', 'id_rsa', './id_rsa')
+    privkey = paramiko.RSAKey.from_private_key_file (filename='./id_rsa', password='araldif1*' )
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
     try:
-        ssh.connect('araldif.westus.cloudapp.azure.com', username='araldif', password='araldif1*')
+        ssh.connect('40.112.209.249', username='araldif', password='araldif1*', allow_agent=False, pkey=None, key_filename=None, timeout=10, look_for_keys=False, compress=False)
     except paramiko.SSHException:
-           return HttpResponse("Connection Failed")
+           return HttpResponse()
            quit()
 
-    stdin,stdout,stderr = ssh.exec_command("ls /etc/")
-
+    #stdin,stdout,stderr = ssh.exec_command("ls /etc/")
+    cmd = '/home/araldif/anaconda3/bin/python /datadrive/from_webapp/xarray_analysis.py ' + latstart + ' ' + latend + ' ' + lonstart + ' ' + lonend + ' ' + sea 
+    #cmd = '/datadrive/from_webapp/xarray_analysis.py'
+    #cmd = 'python /datadrive/from_webapp/test.py ' + name 
+    stdin,stdout,stderr = ssh.exec_command(cmd)
+    
     h = []
-    for line in stdout.readlines():
+    for line in stderr.readlines():
         h.append(line)
-    stdout.close()
+    stderr.close()
     ssh.close()
     
-    return HttpResponse(h)
+    try:
+       imageoutfile1 = 'prec_' + str(sea) + '_' + str(latstart) + '_' + str(latend) + '_' + str(lonstart) + '_' + str(lonend) + '.png'
+       imageoutfile2 = './' + imageoutfile1
+       
+       blob_service = BlobService(account_name='araldrift', account_key='otLzzkwQHQD3xFTQxwxy64PCL6eDINWGjSB7x6Ta2XVw3+3ffI5O2MhAEavf/r8qIW4G/dKrZAVg1R64nK7hDQ==')
+       blob_service.get_blob_to_path('flow', imageoutfile1, imageoutfile2)
+       image_data = open(imageoutfile2, "rb").read()
+       response = HttpResponse(image_data, content_type='image/png')
+       return response
+    except:
+      return HttpResponse(h,content_type='text/plain')
 
 def gethydrograph(request):
     '''
